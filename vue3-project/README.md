@@ -1,4 +1,4 @@
-# tutorial_vue
+# vue3-project
 
 ## Project setup
 ```
