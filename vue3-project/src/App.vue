@@ -2,6 +2,8 @@
   <div>
     {{ name }}
   </div>
+  <input :class="nameClass" type="text" v-bind:value="name">
+  <!-- value뿐 아니라 모든 속성을 바인딩 해줄수 있음 -->
   <button 
     class="btn btn-primary"
     v-on:click="update"
@@ -17,6 +19,7 @@ export default {
     const arrayName = reactive({
       id: 1
     })
+    const nameClass = ref('name')
     //객채, 오브젝트는 reactive를 사용 프로퍼티로 바로 접근가능하다
 
     /* const greeting = (name) => {
@@ -32,7 +35,8 @@ export default {
     return {
       name,
       arrayName,
-      update
+      update,
+      nameClass
     }
   }
 }
