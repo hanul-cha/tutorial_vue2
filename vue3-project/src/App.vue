@@ -1,17 +1,16 @@
 <template>
-  <input 
-    type="text" 
-    v-model="name"
-  >
-  <!-- value뿐 아니라 모든 속성을 바인딩 해줄수 있음 -->
-  <button 
-    class="btn btn-primary"
-    @click="onSubmit"
-  >click</button>
+  <div class="container">
+    <h2>To-Do List</h2>
+    <form action="">
+      <input type="text" v-model="name" />
+      <!-- value뿐 아니라 모든 속성을 바인딩 해줄수 있음 -->
+      <button class="btn btn-primary" @click="onSubmit">click</button>
+    </form>
+  </div>
 </template>
 
 <script>
-import { ref } from '@vue/reactivity';
+import { ref } from "@vue/reactivity";
 
 export default {
   setup() {
@@ -24,15 +23,15 @@ export default {
     const greet = greeting(name); */
 
     const onSubmit = () => {
-      console.log(name.value)
-    }
- 
+      console.log(name.value);
+    };
+
     return {
       name,
       onSubmit,
-    }
-  }
-}
+    };
+  },
+};
 /* 
 이전 vue2에선 options api를 사용했다.
 vue2버전에서 간단하게 사용해봤는데 가독성도 별로고 제일문제는 나뉘어진 로직이 복잡했음
@@ -50,6 +49,4 @@ v-on: == @
  */
 </script>
 
-<style>
-
-</style>
+<style></style>
