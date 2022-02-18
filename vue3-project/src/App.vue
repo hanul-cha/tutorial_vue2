@@ -1,25 +1,21 @@
 <template>
-  <div>
-    {{ name }}
-  </div>
-  <input :class="nameClass" type="text" v-bind:value="name">
+  <input 
+    type="text" 
+    v-model="name"
+  >
   <!-- value뿐 아니라 모든 속성을 바인딩 해줄수 있음 -->
   <button 
     class="btn btn-primary"
-    v-on:click="update"
+    @click="onSubmit"
   >click</button>
 </template>
 
 <script>
-import { ref, reactive } from '@vue/reactivity';
+import { ref } from '@vue/reactivity';
 
 export default {
   setup() {
     const name = ref("hanulCha");
-    const arrayName = reactive({
-      id: 1
-    })
-    const nameClass = ref('name')
     //객채, 오브젝트는 reactive를 사용 프로퍼티로 바로 접근가능하다
 
     /* const greeting = (name) => {
@@ -27,16 +23,13 @@ export default {
     }
     const greet = greeting(name); */
 
-    const update = () => {
-      name.value = "chahanul"
-      arrayName.id = 2
+    const onSubmit = () => {
+      console.log(name.value)
     }
-
+ 
     return {
       name,
-      arrayName,
-      update,
-      nameClass
+      onSubmit,
     }
   }
 }
@@ -51,6 +44,10 @@ vue2에선 두게 이상의 태그가 있다면 부모태그로 감싸주어야 
 이는 react에선 아직도 지켜야하는 문법인데 react에선 비어있는 프레그먼트로 해결가능했음
 vue3에선 이런 빈 플레그먼트 없이도 작성가능하다
 */
+
+/* 
+v-on: == @
+ */
 </script>
 
 <style>
