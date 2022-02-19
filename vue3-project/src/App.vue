@@ -20,19 +20,29 @@
       <div v-show="hasError" class="error">This field cannot be empty</div>
     </form>
 
-    <div class="card" v-for="todo in todos" :key="todo.id">
-      <div class="card-body p-2">
-        <div>
-          <input 
+    <div v-if="!todos.length">
+      추가된 Todo가 없습니다.
+    </div>
+    <div class="card" v-for="(todo, index) in todos" :key="todo.id">
+      <div class="card-body p-2 d-flex align-items-center">
+        <div class="form-check flex-grow-1">
+          <input
             type="checkbox"
             class="form-check-input"
             v-model="todo.completed"
+          />
+          <label
+            class="form-check-labal"
+            :class="{ ifTodoCheck: todo.completed }"
           >
-          <label class="form-check-labal">
             {{ todo.subject }}
           </label>
         </div>
-        
+        <div>
+          <button class="btn btn-danger btn-sm" @click="deleteTodo(index)">
+            Delete
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -47,6 +57,10 @@ export default {
     //객채, 오브젝트는 reactive를 사용 프로퍼티로 바로 접근가능하다
     const todos = ref([]);
     const hasError = ref(false);
+    const todoStyle = {
+      textDecoration: "line-through",
+      color: "gray",
+    }; //바뀌는 값이 아니기 때문에 일반 변수로 선언
 
     const onSubmit = () => {
       if (todo.value == "") {
@@ -64,12 +78,18 @@ export default {
 
     const onHasError = () => [(hasError.value = !hasError.value)];
 
+    const deleteTodo = (index) => {
+      todos.value.splice(index, 1);
+    };
+
     return {
       todo,
       todos,
       onSubmit,
       hasError,
       onHasError,
+      todoStyle,
+      deleteTodo,
     };
   },
 };
@@ -89,7 +109,18 @@ vue3에선 이런 빈 플레그먼트 없이도 작성가능하다
 v-on: == @
 e.preventDefalt할 필요 없이
 vue에선 이벤트를 걸때 속성에 prevent프로퍼티를 넣어주면됨
- */
+
+style바인딩
+:style="todo.completed? todoStyle:{}" 삼항연산자로 
+const todoStyle = {
+      textDecoration: "line-through",
+      color: 'gray'
+    }
+이런 오브젝트를 포함한다는 뜻으로 사용
+
+class 바인딩
+:class="{ifTodoCheck: todo.completed}"    :를 기준으로 참이면 클래스를 추가 아니면 제거
+*/
 
 /* 
 v-show는 렌더링 자체는 되고 display:none으로 표현해줌
@@ -104,7 +135,7 @@ v-if쓰면 될거같고
 react에선 전부 v-if로 작성하게 되있음 조건에 충족하면 렌더링해주는 방식이라
 커스텀을 하면 할수 있지만 기본적으로 v-if임
 vue에서 이렇게 두가지 선택지를 미리 준다는게 좀 매력적이네
- */
+*/
 
 /* 
 조금 써보니까 vue2와 vue3 의 가장 큰 차이점은
@@ -118,11 +149,15 @@ vue2의 기본확장을 보면 js의 class과 아주 흡사한 모습이다
 
 함수형 프로그래밍엔 타입지정이 필수듯이 typescript도
 함수형 정의가 필요함
- */
+*/
 </script>
 
 <style>
 .error {
   color: red;
+}
+.ifTodoCheck {
+  text-decoration: line-through;
+  color: grey;
 }
 </style>
