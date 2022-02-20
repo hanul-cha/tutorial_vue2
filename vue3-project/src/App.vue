@@ -75,6 +75,11 @@ export default {
     const toggleTodo = async (id) => {
       const newTodos = computed(() => todos.value.filter(todo => todo.id == id))
       //프록시에서 빠져나오기 위해 노력해 봤지만 이게 최선이였음
+      /* 
+      vue3에서 반응변수를 구현하는 방식은 proxy를 이용해 하는듯한데
+      문제는 ref로 선언한 변수를 map, filter를 사용하면 promis처럼 proxy로 담김
+      접근을 할수는 있었지만 좀더 유연한 방식이 있을거같다.
+      */
       try {
         const res = await axios.patch(
           `http://localhost:3001/api/patchTodo/${id}`,
