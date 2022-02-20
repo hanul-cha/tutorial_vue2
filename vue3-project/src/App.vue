@@ -3,41 +3,24 @@
     <h2>To-Do List</h2>
     <TodoSimpleForm @add-todo="addTodo" />
 
-    <div v-if="!todos.length">
-      추가된 Todo가 없습니다.
-    </div>
-    <div class="card" v-for="(todo, index) in todos" :key="todo.id">
-      <div class="card-body p-2 d-flex align-items-center">
-        <div class="form-check flex-grow-1">
-          <input
-            type="checkbox"
-            class="form-check-input"
-            v-model="todo.completed"
-          />
-          <label
-            class="form-check-labal"
-            :class="{ ifTodoCheck: todo.completed }"
-          >
-            {{ todo.subject }}
-          </label>
-        </div>
-        <div>
-          <button class="btn btn-danger btn-sm" @click="deleteTodo(index)">
-            Delete
-          </button>
-        </div>
-      </div>
-    </div>
+    <div v-if="!todos.length">추가된 Todo가 없습니다.</div>
+    <TodoList
+      :propTodos="todos"
+      @toggle-todo="toggleTodo"
+      @delete-todo="deleteTodo"
+    />
   </div>
 </template>
 
 <script>
 import { ref } from "@vue/reactivity";
-import TodoSimpleForm from './components/TodoSimpleForm.vue'
+import TodoSimpleForm from "./components/TodoSimpleForm.vue";
+import TodoList from "./components/TodoList.vue";
 
 export default {
   components: {
-    TodoSimpleForm
+    TodoSimpleForm,
+    TodoList,
   },
   setup() {
     //객채, 오브젝트는 reactive를 사용 프로퍼티로 바로 접근가능하다
@@ -48,7 +31,11 @@ export default {
     }; //바뀌는 값이 아니기 때문에 일반 변수로 선언
 
     const addTodo = (todo) => {
-      todos.value.push(todo)
+      todos.value.push(todo);
+    };
+
+    const toggleTodo = (index) => {
+      todos.value[index].completed = !todos.value[index].completed;
     };
 
     const deleteTodo = (index) => {
@@ -60,6 +47,7 @@ export default {
       addTodo,
       todoStyle,
       deleteTodo,
+      toggleTodo,
     };
   },
 };
