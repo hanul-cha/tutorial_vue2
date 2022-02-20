@@ -23,6 +23,7 @@
 import { ref, computed } from "@vue/reactivity";
 import TodoSimpleForm from "./components/TodoSimpleForm.vue";
 import TodoList from "./components/TodoList.vue";
+import axios from "axios";
 
 export default {
   components: {
@@ -38,6 +39,12 @@ export default {
     }; //바뀌는 값이 아니기 때문에 일반 변수로 선언
 
     const addTodo = (todo) => {
+      axios.post('http://localhost:3001/api/addTodo', {
+        path: {
+          subject: todo.subject,
+          completed: todo.completed
+        }
+      })
       todos.value.push(todo);
     };
 

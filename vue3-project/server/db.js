@@ -26,6 +26,7 @@ client.connect((err) => {
 });
 
 app.use(cors(corsOption));
+app.use(express.json());
 
 app.get("/api/todos", async (req, res) => {
   return new Promise((resolve, reject) => {
@@ -38,5 +39,24 @@ app.get("/api/todos", async (req, res) => {
     });
   });
 });
+app.post('/api/addTodo', async (req, res) => { 
+    console.log(req.body.path.subject)
+    res.status(200).json({success:true})
+    if(req.method == "POST") {
+        return new Promise((resolve, reject) => {
+            const path = req.body.path
+            const sendQuery = 'INSERT INTO todos (subject, completed) VALUES($1, $2);'
+            client.query(sendQuery, [path.subject, path.completed], (err) => {
+                if(err) {
+                    return reject(`${err}`)
+                } else {
+                    resolve({ success:true })
+                }
+            })
+            
+        })
+    }
+    
+})
 
 app.listen(3001, () => console.log("서버가동 : 3001"));
