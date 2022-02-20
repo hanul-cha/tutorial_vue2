@@ -32,7 +32,7 @@ export default {
         hasError.value = true;
       } else {
         context.emit('add-todo', {
-          id: Date.now(),
+          id: String(Date.now()),
           subject: todo.value,
           completed: false,
         });

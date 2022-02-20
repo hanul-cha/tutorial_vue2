@@ -16,7 +16,7 @@
         </label>
       </div>
       <div>
-        <button class="btn btn-danger btn-sm" @click="deleteTodo(index)">
+        <button class="btn btn-danger btn-sm" @click="deleteTodo(todo.id)">
           Delete
         </button>
       </div>
@@ -38,8 +38,8 @@ export default {
       emit("toggle-todo", index);
     };
 
-    const deleteTodo = (index) => {
-      emit("delete-todo", index);
+    const deleteTodo = (id) => {
+      emit("delete-todo", id);
     };
     return {
       toggleTodo,

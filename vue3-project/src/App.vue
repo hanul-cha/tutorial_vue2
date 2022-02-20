@@ -9,6 +9,9 @@
     />
     <hr />
     <TodoSimpleForm @add-todo="addTodo" />
+    <div style="color: red">
+      {{ error }}
+    </div>
 
     <div v-if="!filteredTodos.length">There is nothing to display</div>
     <TodoList
@@ -38,34 +41,63 @@ export default {
       color: "gray",
     }; //바뀌는 값이 아니기 때문에 일반 변수로 선언
 
-    const addTodo = (todo) => {
-      axios.post('http://localhost:3001/api/addTodo', {
-        path: {
-          subject: todo.subject,
-          completed: todo.completed
+    const error = ref("");
+
+    const getTodos = async () => {
+      try {
+        const res = await axios.get("http://localhost:3001/api/todos");
+        todos.value = res.data;
+      } catch (err) {
+        console.log(err);
+        error.value = "Sometion went wrong.";
+      }
+    };
+    getTodos();
+
+    const addTodo = async (todo) => {
+      error.value = "";
+      try {
+        const res = await axios.post("http://localhost:3001/api/addTodo", {
+          path: {
+            id: todo.id,
+            subject: todo.subject,
+            completed: todo.completed,
+          },
+        });
+        if (res.data.success) {
+          todos.value.push(res.data.result);
         }
-      })
-      todos.value.push(todo);
+      } catch (err) {
+        error.value = "Sometion went wrong.";
+      }
     };
 
     const toggleTodo = (index) => {
       todos.value[index].completed = !todos.value[index].completed;
     };
 
-    const deleteTodo = (index) => {
-      todos.value.splice(index, 1);
+    const deleteTodo = async (id) => {
+      console.log(todos.value);
+      try {
+        const res = await axios.delete(`http://localhost:3001/api/deleteTodo/${id}`);
+        if (res.data.success) {
+          todos.value = todos.value.filter((list) => list.id !== id);
+        }
+      } catch (err) {
+        console.log(err);
+      }
     };
 
-    const searchText = ref('');
+    const searchText = ref("");
     const filteredTodos = computed(() => {
-      if(searchText.value) {
-        return todos.value.filter(todo => {
+      if (searchText.value) {
+        return todos.value.filter((todo) => {
           return todo.subject.includes(searchText.value);
-        })
+        });
       }
 
-      return todos.value
-    })
+      return todos.value;
+    });
 
     return {
       todos,
@@ -74,7 +106,8 @@ export default {
       deleteTodo,
       toggleTodo,
       searchText,
-      filteredTodos
+      filteredTodos,
+      error,
     };
   },
 };
