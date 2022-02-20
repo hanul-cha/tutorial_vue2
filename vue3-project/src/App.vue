@@ -1,24 +1,7 @@
 <template>
   <div class="container">
     <h2>To-Do List</h2>
-    <form @submit.prevent="onSubmit">
-      <div class="d-flex">
-        <div class="flex-grow-1 mr-3">
-          <input
-            class="form-control"
-            type="text"
-            v-model="todo"
-            placeholder="Type new todo"
-          />
-        </div>
-        <div>
-          <button class="btn btn-primary" type="submit">ADD</button>
-        </div>
-        <!-- value뿐 아니라 모든 속성을 바인딩 해줄수 있음 -->
-      </div>
-
-      <div v-show="hasError" class="error">This field cannot be empty</div>
-    </form>
+    <TodoSimpleForm @add-todo="addTodo" />
 
     <div v-if="!todos.length">
       추가된 Todo가 없습니다.
@@ -50,44 +33,31 @@
 
 <script>
 import { ref } from "@vue/reactivity";
+import TodoSimpleForm from './components/TodoSimpleForm.vue'
 
 export default {
+  components: {
+    TodoSimpleForm
+  },
   setup() {
-    const todo = ref("");
     //객채, 오브젝트는 reactive를 사용 프로퍼티로 바로 접근가능하다
     const todos = ref([]);
-    const hasError = ref(false);
     const todoStyle = {
       textDecoration: "line-through",
       color: "gray",
     }; //바뀌는 값이 아니기 때문에 일반 변수로 선언
 
-    const onSubmit = () => {
-      if (todo.value == "") {
-        hasError.value = true;
-      } else {
-        todos.value.push({
-          id: Date.now(),
-          subject: todo.value,
-          completed: false,
-        });
-        todo.value = "";
-        hasError.value = false;
-      }
+    const addTodo = (todo) => {
+      todos.value.push(todo)
     };
-
-    const onHasError = () => [(hasError.value = !hasError.value)];
 
     const deleteTodo = (index) => {
       todos.value.splice(index, 1);
     };
 
     return {
-      todo,
       todos,
-      onSubmit,
-      hasError,
-      onHasError,
+      addTodo,
       todoStyle,
       deleteTodo,
     };
