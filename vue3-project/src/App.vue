@@ -72,14 +72,34 @@ export default {
       }
     };
 
-    const toggleTodo = (index) => {
-      todos.value[index].completed = !todos.value[index].completed;
+    const toggleTodo = async (id) => {
+      const newTodos = computed(() => todos.value.filter(todo => todo.id == id))
+      //프록시에서 빠져나오기 위해 노력해 봤지만 이게 최선이였음
+      try {
+        const res = await axios.patch(
+          `http://localhost:3001/api/patchTodo/${id}`,
+          {
+            completed: !newTodos.value[0].completed 
+          }
+        );
+        if (res.data.success) {
+          todos.value.map((list) => {
+            if (list.id == id) {
+              list.completed = !list.completed;
+            }
+          });
+        }
+      } catch (err) {
+        console.log(err);
+      }
+      /* todos.value[index].completed = !todos.value[index].completed; */
     };
 
     const deleteTodo = async (id) => {
-      console.log(todos.value);
       try {
-        const res = await axios.delete(`http://localhost:3001/api/deleteTodo/${id}`);
+        const res = await axios.delete(
+          `http://localhost:3001/api/deleteTodo/${id}`
+        );
         if (res.data.success) {
           todos.value = todos.value.filter((list) => list.id !== id);
         }
@@ -95,9 +115,10 @@ export default {
           return todo.subject.includes(searchText.value);
         });
       }
-
+    
       return todos.value;
     });
+
 
     return {
       todos,

@@ -39,27 +39,43 @@ app.get("/api/todos", async (req, res) => {
     });
   });
 });
+app.patch("/api/patchTodo/:id", async (req, res) => {
+  console.log(req.body.completed);
+  console.log(req.params.id);
+  res.status(200);
+  return new Promise((resolve, reject) => {
+    const sendQuery =
+      "UPDATE todos SET completed = $1 WHERE id = $2 RETURNING id;";
+    client.query(sendQuery, [req.body.completed, req.params.id], (err,result) => {
+      if (err) {
+        reject(`${err}`);
+      } else {
+        resolve(
+          res.status(200).json({
+            success: true,
+            result: result,
+          })
+        );
+      }
+    });
+  });
+});
 app.delete("/api/deleteTodo/:id", async (req, res) => {
   if (req.method == "DELETE") {
     return new Promise((resolve, reject) => {
-      const sendQuery =
-        "DELETE FROM todos WHERE id = $1 RETURNING id;";
-      client.query(
-        sendQuery,
-        [req.params.id],
-        (err) => {
-          if (err) {
-            return reject(`${err}`);
-          } else {
-            resolve(
-              res.status(200).json({
-                success: true,
-                result: req.params.id,
-              })
-            );
-          }
+      const sendQuery = "DELETE FROM todos WHERE id = $1 RETURNING id;";
+      client.query(sendQuery, [req.params.id], (err) => {
+        if (err) {
+          return reject(`${err}`);
+        } else {
+          resolve(
+            res.status(200).json({
+              success: true,
+              result: req.params.id,
+            })
+          );
         }
-      );
+      });
     });
   }
 });

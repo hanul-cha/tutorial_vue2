@@ -1,12 +1,12 @@
 <template>
-  <div class="card" v-for="(todo, index) in propTodos" :key="todo.id">
+  <div class="card" v-for="(todo, index) in propTodos" :key="index">
     <div class="card-body p-2 d-flex align-items-center">
       <div class="form-check flex-grow-1">
         <input
           type="checkbox"
           class="form-check-input"
-          :value="todo.completed"
-          @change="toggleTodo(index)"
+          :checked="todo.completed"
+          @change="toggleTodo(todo.id)"
         />
         <label
           class="form-check-labal"
@@ -34,8 +34,8 @@ export default {
     },
   },
   setup(props, { emit }) {
-    const toggleTodo = (index) => {
-      emit("toggle-todo", index);
+    const toggleTodo = (id) => {
+      emit("toggle-todo", id);
     };
 
     const deleteTodo = (id) => {
