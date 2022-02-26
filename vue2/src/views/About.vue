@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 @mouseover="onOver" @mouseleave="onLeave">mac</h1>
+    <h1 @mouseover="onOver" @mouseleave="onLeave">mac과의 연결</h1>
     <div v-show="bool">
       {{ title }}
     </div>
