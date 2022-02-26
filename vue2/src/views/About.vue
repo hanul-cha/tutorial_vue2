@@ -1,8 +1,6 @@
 <template>
   <div>
-    <h1 @mouseover="onOver" @mouseleave="onLeave">
-      여긴 어바웃이야
-    </h1>
+    <h1 @mouseover="onOver" @mouseleave="onLeave">mac과의 연결</h1>
     <div v-show="bool">
       {{ title }}
     </div>
@@ -14,18 +12,18 @@ export default {
     return {
       title: "개발자",
       bool: false,
-      test:null
+      test: null,
     };
   },
   methods: {
     onOver() {
       this.test = setTimeout(() => {
-          this.bool = true;
+        this.bool = true;
       }, 2000);
     },
     onLeave() {
-    clearTimeout(this.test)
-    this.bool = false;
+      clearTimeout(this.test);
+      this.bool = false;
     },
   },
 };
