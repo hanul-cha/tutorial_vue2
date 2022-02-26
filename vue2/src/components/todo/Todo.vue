@@ -26,13 +26,13 @@ export default {
   },
   methods: {
     toggleCheck(e) {
-      this.$emit("toggle-check", {
+      this.$store.commit("TOGGLE_TODO", {
         id: this.todo.id,
         checked: e.target.checked,
       });
     },
     deleteTodo() {
-      this.$emit("delete-todo", this.todo.id);
+      this.$store.commit("DELETE_TODO", this.todo.id);
     },
   },
 };
