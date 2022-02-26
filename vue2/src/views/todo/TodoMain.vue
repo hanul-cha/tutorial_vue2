@@ -9,10 +9,8 @@
       placeholder="todo"
     />
     <hr />
-    <Todo
-      :key="todo.id"
-      v-for="todo in todos"
-      :todo="todo"
+    <todo-list
+      :todos="todos"
       @toggle-check="toggle"
       @delete-todo="deleteTodo"
     />
@@ -20,10 +18,10 @@
 </template>
 
 <script>
-import Todo from "../../components/todo/Todo.vue";
+import TodoList from "../../components/todo/TodoList.vue";
 export default {
   components: {
-    Todo,
+    TodoList,
   },
   data() {
     return {
