@@ -10,14 +10,18 @@
     />
     <hr />
     <todo-list />
+    <users />
   </div>
 </template>
 
 <script>
 import TodoList from "../../components/todo/TodoList.vue";
+import Users from "../../components/todo/Users.vue";
+
 export default {
   components: {
     TodoList,
+    Users,
   },
   data() {
     return {
