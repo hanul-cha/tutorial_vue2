@@ -48,7 +48,11 @@ export default new Vuex.Store({
       });
     },
   }, //함수가 들어가는 공간, 비동기적인 이후값을 바꾸게될 로직을 뮤테이션에 요청
-  getters: {}, //뷰 컴포넌트에 compated 와 유사
+  getters: {
+    numberOfCompleted(state) {
+      return state.todos.filter((todo) => todo.checked).length;
+    },
+  }, //뷰 컴포넌트에 compated 와 유사
 });
 
 /* 

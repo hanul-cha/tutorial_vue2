@@ -1,6 +1,7 @@
 <template>
   <div id="app" class="container">
     <h1 class="test-center">TodoApp</h1>
+    <CompletedTodo />
     <input
       @keyup.enter="addTodo"
       v-model="todoText"
@@ -17,11 +18,13 @@
 <script>
 import TodoList from "../../components/todo/TodoList.vue";
 import Users from "../../components/todo/Users.vue";
+import CompletedTodo from "../../components/todo/CompletedTodo.vue";
 
 export default {
   components: {
     TodoList,
     Users,
+    CompletedTodo,
   },
   data() {
     return {
